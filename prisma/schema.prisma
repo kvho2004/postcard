@@ -12,18 +12,23 @@ datasource db {
   provider = "postgresql"
 }
 
-model User { 
-  id    Int     @id @default(autoincrement()) 
-  email String  @unique
-  name  String?
-  posts Post[]
+model User {  
+  id         Int        @id @default(autoincrement()) 
+  email      String     @unique
+  name       String?
+  postcards  Postcard[]
 } 
 
-model Post { 
-  id        Int     @id @default(autoincrement()) 
-  title     String
-  content   String?
-  published Boolean @default(false) 
-  author    User    @relation(fields: [authorId], references: [id]) 
+model Postcard { 
+  id        Int       @id @default(autoincrement()) 
+  imageUrl  String?
+  message   String?
+
   authorId  Int
-} 
+  author    User      @relation(fields: [authorId], references: [id])
+
+  toUserId  Int
+  sentAt    DateTime? 
+
+  isSent    Boolean   @default(false)
+}
